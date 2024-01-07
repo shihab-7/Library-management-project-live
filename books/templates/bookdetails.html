@@ -1,0 +1,61 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="col-12 ">
+
+    <div class="m-3 col-12">
+        <div class="col-12 m-2">
+            <div class="card mx-2">
+                <div class="card-body">
+                    <img src="{{book.image.url }}" class="card-img-top" alt="book image" style="width:45%;">
+                    <h5>Title : {{book.title}}</h5>
+                    <h6>Description : {{book.Description}}</h6>
+                    <h6>Borrowing Price : {{book.price}}$</h6>
+                    <p>
+                    Categories :
+                    {% for c in book.category.all %}
+                    <button class="btn btn-primary btn-sm m-2" disabled >{{c.category}} </button>
+                    {%endfor%}
+                    </p>
+                {%if user.is_authenticated%}
+                <a class="btn btn-warning mx-2" href="{%url 'borrow' book.id %}">Borrow Now</a>
+                <strong class="text-danger"> * Borrow a Book To give a review</strong>
+                {%else%}
+                    <strong class="text-danger"> * Register an Account to Borrow Books</strong>
+                {%endif%}
+                </div>
+            </div>
+        </div>
+    
+        <div class="card m-3 col-8">
+        <h3 class="p-1" >Total : {{ reviews | length }} reviews</h3>
+        {% for c in reviews %}
+            <div class="card-body border m-2">  
+                <h4>Reviewed by : </h4>
+            <p><b>{{ c.name}}</b></p>
+            <p><b>{{ c.created_on}}</b></p>
+            <p>{{c.body}}<p>
+            </div>
+        {% endfor %}
+        </div>
+        
+        {%if user in book.borrowing_users.all %}
+            <div class="col-8">
+                <div class="card m-3 p-2 col-6">
+                <h2>Add Review : </h2>
+                <div class="card-body">
+                    <form method='post' class="m-2">
+                        {% csrf_token %}
+                        {{ review_form | crispy}}
+                    <button class="btn btn-primary mt-2 p-1">Submit</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+
+</div>
+
+{% endblock %}

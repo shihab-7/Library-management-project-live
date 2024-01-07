@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{%load static%}
+{%block content%}
+
+
+<div style="margin-bottom:100px;">
+        <div class="justify-content-center align-items-center mt-2 p-2 d-flex">
+            <div class="col-6 mx-2 p-2 text-center"><h2 style="color:#bf00ff;">Welcome to the world of knowledge : </h2>
+                <h6 class=" bg-gradient m-5 p-3" style=" color: white; text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;">Lorem ipsum dolor sit amet, an mutat epicuri philosophia his, ne per dicta saperet. No sea liber offendit expetendis, quo tation assentior deseruisse ne. Vix ei mentitum conceptam deterruisset, ea melius copiosae percipitur eos, possim legendos his in. No pro minim diceret honestatis, ei eam facer facete.
+
+                    Eum dolorum accusata sententiae an, senserit pericula postulant te vel. Cu pro quod vidisse, choro mentitum est an, cum at principes signiferumque. Id nec ferri veniam, doming eruditi in est, eripuit feugait constituto mel ea. Quem quod aeque eum eu, omnis interpretaris vim ad. Nibh gubergren ex vel.
+                    </h6>
+            </div>
+            <div class="col-6 mx-2 ">
+                <img src="{% static 'library.jpg'%}" style="width:85%; border-radius:30px; box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.7),
+                1px 2px 4px 0px rgba(0,255,255,0.7),
+                2px 4px 8px 0px rgba(0,255,255,0.7),
+                2px 4px 16px 0px rgba(0,255,255,0.7);" alt="blog_image"/>
+            </div>
+        </div>
+        <br/>
+
+        <div class="container">
+            <h1 class="px-2 mb-3" style="color:#00ff7f;">Filter By categories : </h1>
+            <div class=" col-12 d-flex flex-wrap">
+                {%for c in categories%}
+                <div class="col-2 p-1 mx-3" style="border-radius: 7px;box-shadow:0px 1px 2px 0px rgba(0,255,255,0.7),
+                1px 2px 4px 0px rgba(0,255,255,0.7),
+                2px 4px 8px 0px rgba(0,255,255,0.7),
+                2px 4px 16px 0px rgba(0,255,255,0.7);">
+                        <nav class="navbar bg-black">
+                            <div class="container justify-content-center align-items-center">
+                            <a class="navbar-brand" href="{% url 'category_filter' c.slug %}">
+                                <h3 style=" color:#8a2be2;">{{c.category}}</h3>
+                            </a>
+                            </div>
+                        </nav>
+                    </div>
+                    {%endfor%} 
+                </div>
+                <br/>
+                <div class="col-3 m-3">
+                    <nav class="navbar bg-success"style="border-radius: 7px;">
+                        <div class="px-5">
+                            <p class="m-2 text-white"><b>{{ data | length }} results found </b></p>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+            <div class="container">
+            <div class="col-12 d-flex flex-wrap mx-2">
+
+                {% for c in data%}
+                            <div class="col-sm-3">
+                                <div class="card mx-2 mt-2">
+                                    <div class="card-body">
+                                        <img src="{{c.image.url}}" class="card-img-top mb-2" alt="book images" style="width:190px; height:220px;">
+                                        <h4><b>Title :</b></h4> {{c.title | truncatewords:3}}
+                                        <h6><b>Description :</b></h6> {{c.Description | truncatewords:7}}
+                                        <h6><b>Borrow Price :</b></h6> {{c.price}}$
+                                        <h6><b>Categories :</b></h6>
+                                        {%for a in c.category.all%} 
+                                        <button class="btn btn-info p-1 m-1" disabled>{{a.category}}</button>
+                                        {%endfor%}
+                                    <a class="btn btn-primary" href="{% url 'book_details' c.id %}">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                {%endfor%}
+            </div>
+        </div>
+</div>
+{%endblock%}

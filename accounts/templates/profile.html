@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{%block content%}
+{%load static%}
+<div class="container p-2">
+  
+  {%if messages%}
+      {% for m in messages%}
+      <h4 class="text-{{m.tags}} bg-white text-center p-1" style="border-radius:7px;">{{m}}</h4>
+      {%endfor%}
+  {%endif%}
+</div>
+
+
+<div class="container d-flex flex-wrap mt-5 p-5">
+
+  <div class="col-8"></div>
+    <h5 class=" text-center p-2" style="background-color: white; margin:auto; width:50%; border-radius:8px;"> welcome to your profile <b style="color:blue;">{{user.first_name}}</b></h5>
+  <!-- <div class="col-4">
+    <a class="btn btn-outline-primary" href="#">Edit Profile</a>
+  </div> -->
+</div>
+<hr style="height:5px; background-color:white;"/>
+<div class="col-10">
+  <h3 class="text-warning mx-5">Activity History :</h3>
+  <div class="container">
+    <div class="col-12 d-flex flex-wrap mx-2">
+
+    {%if book_details%}
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Book Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Balance Affter Transaction</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+        {% for d in book_details%}
+              <tr>
+                    <td>{{d.book.id}}</td>
+                    <td>{{d.book.title}}</td>
+                    <td>{{d.book.price}}</td>
+                    <td>{% for b in d.each_detail%}
+                            <ul><li>{{b.balance_after_transaction}}$</li></ul>
+                        {%endfor%}
+
+                    </td>
+                    <td>
+                        {% for b in d.each_detail%}
+                            <li>{{b.timestamp}}</li>
+                        {%endfor%}
+                    </td>
+                    <td><a class="btn btn-danger" href="{%url 'return' d.book.id%}">Return</a></td>
+                </tr>
+            {%endfor%}
+            </tbody>
+          </table>
+
+    {%else%}
+                <h1 class="text-white">Nothing Here</h1>
+    {%endif%}
+    </div>
+</div>
+</div>
+
+{%endblock%}
